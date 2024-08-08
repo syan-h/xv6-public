@@ -7,6 +7,21 @@
 #include "mmu.h"
 #include "proc.h"
 
+
+int 
+sys_addnums(void){
+
+  int a,b;
+  if (argint(0, &a) < 0)
+    return -1;
+  if (argint(1, &b) < 0)
+    return -1;
+  return a+b;
+
+}
+
+
+
 int
 sys_fork(void)
 {
