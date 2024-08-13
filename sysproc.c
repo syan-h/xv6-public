@@ -104,3 +104,71 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+extern struct {
+		
+	struct proc proc[NPROC];
+   
+} ptable;
+
+
+int 
+sys_prog(void){
+   
+  struct proc *p;
+  
+  for(p = ptable.proc; p < &ptable.proc[NPROC];p++){
+    if(p->state == RUNNING){
+      cprintf("%d %s",p->pid,p->state);	
+      cprintf("\n");
+    }
+    else{
+      continue;
+    }
+
+  }
+  
+  return 0;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
