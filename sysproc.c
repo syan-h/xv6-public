@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-
+#include "spinlock.h"
 
 int 
 sys_addnums(void){
@@ -106,7 +106,7 @@ sys_uptime(void)
 }
 
 extern struct {
-		
+	struct spinlock lock;
 	struct proc proc[NPROC];
    
 } ptable;
@@ -118,8 +118,8 @@ sys_prog(void){
   struct proc *p;
   
   for(p = ptable.proc; p < &ptable.proc[NPROC];p++){
-    if(p->state == RUNNING){
-      cprintf("%d %s",p->pid,p->state);	
+    if(p->state == 4){
+      cprintf("PID = %d NAME = %s",p->pid,p->name);	
       cprintf("\n");
     }
     else{
@@ -131,27 +131,6 @@ sys_prog(void){
   return 0;
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
