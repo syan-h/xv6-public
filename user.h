@@ -24,7 +24,8 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int addnums(int a,int b);
-int prog(void);
+int send_message(char *msg);
+int recieve_message(char *msg);
 
 // ulib.c
 int stat(const char*, struct stat*);
