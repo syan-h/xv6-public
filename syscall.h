@@ -21,4 +21,5 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_addnums 22
-#define SYS_prog 23
+#define SYS_send_message 23
+#define SYS_recieve_message 24

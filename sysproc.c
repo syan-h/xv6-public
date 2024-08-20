@@ -8,6 +8,19 @@
 #include "proc.h"
 #include "spinlock.h"
 
+
+char message_buffer[128];
+int message_available = 0;
+
+struct spinlock msg_lock;
+
+void init_msglock(void){
+  initlock(&msg_lock,"msg_lock");
+
+}
+
+
+
 int 
 sys_addnums(void){
 
@@ -133,20 +146,45 @@ sys_prog(void){
 }
 
 
+int sys_send_message(void){
+
+  char *msg;
+  if (argstr(0,&msg) < 0)
+	return -1;
+  
+
+  acquire(&msg_lock);
+  safestrcpy(message_buffer,msg,sizeof(message_buffer));
+  message_available = 1;
+  
+  release(&msg_lock);
+  wakeup(&message_available);
+  return 0;
 
 
 
+}
 
 
 
+int sys_recieve_message(void){
+  
+  acquire(&msg_lock);
+  while (message_available == 0){
+     sleep(&message_available, &ptable.lock);
+  }	
+  
+  char *msg;
+  if (argstr(0,&msg) < 0)
+	return -1;
 
+  safestrcpy(msg, message_buffer, sizeof(message_buffer));
+  message_available = 0;
 
+  release(&msg_lock);
+  return 0;
 
-
-
-
-
-
+}
 
 
 
