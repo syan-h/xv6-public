@@ -106,6 +106,7 @@ extern int sys_uptime(void);
 extern int sys_addnums(void);
 extern int sys_send_message(void);
 extern int sys_recieve_message(void);
+extern int sys_prog(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -132,6 +133,7 @@ static int (*syscalls[])(void) = {
 [SYS_addnums] sys_addnums,
 [SYS_send_message]    sys_send_message,
 [SYS_recieve_message] sys_recieve_message,
+[SYS_prog]  sys_prog,
 };
 
 void

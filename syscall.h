@@ -23,3 +23,4 @@
 #define SYS_addnums 22
 #define SYS_send_message 23
 #define SYS_recieve_message 24
+#define SYS_prog 25

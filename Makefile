@@ -182,6 +182,7 @@ UPROGS=\
 	_wc\
 	_zombie\
 	_add\
+	_prog\
 	_sender\
 	_reciever\
 
@@ -253,6 +254,7 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 EXTRA=\
         sender.c\
         reciever.c\
+	prog.c\
       	add.c\
 	mkfs.c ulib.c user.h cat.c echo.c forktest.c grep.c kill.c\
 	ln.c ls.c mkdir.c rm.c stressfs.c usertests.c wc.c zombie.c\
