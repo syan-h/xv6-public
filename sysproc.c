@@ -9,9 +9,14 @@
 #include "spinlock.h"
 
 
-char message_buffer[128];
-int message_available = 0;
+struct message{
+  int sender_pid;
+  int reciever_pid[5];
+  char msg[128];
 
+};
+
+struct message msg_buffer;
 struct spinlock msg_lock;
 
 void init_msglock(void){
@@ -129,16 +134,15 @@ int
 sys_prog(void){
    
   struct proc *p;
-  
+   
   for(p = ptable.proc; p < &ptable.proc[NPROC];p++){
-    if(p->state == 4){
-      cprintf("PID = %d NAME = %s",p->pid,p->name);	
-      cprintf("\n");
-    }
-    else{
-      continue;
-    }
-
+      if (p->pid != 0){
+	      cprintf("PID = %d NAME = %s",p->pid,p->name);	
+       	      cprintf("\n");
+       	  
+         
+	
+       }
   }
   
   return 0;
@@ -146,19 +150,42 @@ sys_prog(void){
 }
 
 
-int sys_send_message(void){
+int pid_check(int pid,int *pointer){
 
+  int i;
+  for(i=0;i<5;i++){
+    
+    if(pid == pointer[i]){
+      return 1;
+    }
+  }
+  return 0;
+
+
+}
+
+
+int sys_send_message(void){
+  
+  int (*reciever_pid);
   char *msg;
-  if (argstr(0,&msg) < 0)
+  
+  if (argptr(0,(void*)&reciever_pid,5 * sizeof(int)) < 0 || argstr(1,&msg) < 0)
 	return -1;
   
 
   acquire(&msg_lock);
-  safestrcpy(message_buffer,msg,sizeof(message_buffer));
-  message_available = 1;
+  
+  int i;
+  for(i=0;i<5;i++){
+    msg_buffer.reciever_pid[i] = reciever_pid[i];
+  
+  }
+  msg_buffer.sender_pid = myproc()->pid;
+  safestrcpy(msg_buffer.msg,msg,sizeof(msg_buffer.msg));
   
   release(&msg_lock);
-  wakeup(&message_available);
+  
   return 0;
 
 
@@ -168,22 +195,23 @@ int sys_send_message(void){
 
 
 int sys_recieve_message(void){
-  
-  acquire(&msg_lock);
-  while (message_available == 0){
-     sleep(&message_available, &ptable.lock);
-  }	
-  
   char *msg;
-  if (argstr(0,&msg) < 0)
-	return -1;
 
-  safestrcpy(msg, message_buffer, sizeof(message_buffer));
-  message_available = 0;
+   cprintf("PID = %d\n",myproc()->pid);   
+   if (argstr(0, &msg) < 0)
+     return -1;
 
+
+    acquire(&msg_lock);
+    if ( pid_check(myproc()->pid,msg_buffer.reciever_pid) ) {
+       
+	safestrcpy(msg, msg_buffer.msg, sizeof(msg_buffer.msg));
+       release(&msg_lock);
+       return 0;
+    }
+  
   release(&msg_lock);
-  return 0;
-
+  return -1;
 }
 
 
