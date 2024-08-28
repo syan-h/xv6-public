@@ -56,3 +56,7 @@ struct proc {
 //   original data and bss
 //   fixed-size stack
 //   expandable heap
+//
+//
+extern int count[30];
+extern int togglevalue;

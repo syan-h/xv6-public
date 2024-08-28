@@ -24,3 +24,5 @@
 #define SYS_send_message 23
 #define SYS_recieve_message 24
 #define SYS_prog 25
+#define SYS_print_count 26
+#define SYS_toggle 27

@@ -216,4 +216,29 @@ int sys_recieve_message(void){
 
 
 
+int sys_print_count(){
+   char *arr[] = {"NONE","fork","exit","wait","pipe","read","kill","exec","fstat","chdir","dup","getpid","sbrk","sleep","uptime","open","write","mknod","unlink","link","mkdir","close","addnums","send","recieve","prog","count","toggle"};
+	
+  int i;
+  for(i=0;i < 30;i++){
+    if (count[i] > 0){
+      cprintf("%s %d\n",arr[i],count[i]);
+    }
+  }
+  return 0;  
+}
+
+
+int sys_toggle(){
+  togglevalue = 1 - togglevalue;
+  cprintf("TOGGLED TO: %d\n",togglevalue);
+  int i;
+  for(i=0;i < 30;i++){
+    count[i] = 0;
+  }
+
+
+  return 0;
+}
+
 
