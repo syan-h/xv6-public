@@ -33,3 +33,6 @@ SYSCALL(addnums)
 SYSCALL(send_message)
 SYSCALL(recieve_message)
 SYSCALL(prog)
+SYSCALL(print_count)
+SYSCALL(toggle)
+

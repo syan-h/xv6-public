@@ -7,6 +7,11 @@
 #include "x86.h"
 #include "syscall.h"
 
+
+
+
+
+
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
 // Arguments on the stack, from the user call to the C
@@ -107,6 +112,8 @@ extern int sys_addnums(void);
 extern int sys_send_message(void);
 extern int sys_recieve_message(void);
 extern int sys_prog(void);
+extern int sys_print_count(void);
+extern int sys_toggle(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -134,7 +141,22 @@ static int (*syscalls[])(void) = {
 [SYS_send_message]    sys_send_message,
 [SYS_recieve_message] sys_recieve_message,
 [SYS_prog]  sys_prog,
+[SYS_print_count] sys_print_count,
+[SYS_toggle]  sys_toggle,
 };
+
+
+
+
+
+int count[30];
+int togglevalue = 0;
+
+
+
+
+
+
 
 void
 syscall(void)
@@ -144,7 +166,11 @@ syscall(void)
 
   num = curproc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    curproc->tf->eax = syscalls[num]();
+          if (togglevalue) {
+	    count[num]++;
+	  }
+
+      	  curproc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",
             curproc->pid, curproc->name, num);

@@ -185,6 +185,9 @@ UPROGS=\
 	_prog\
 	_sender\
 	_reciever\
+	_print_count\
+	_toggle\
+
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
@@ -252,7 +255,9 @@ qemu-nox-gdb: fs.img xv6.img .gdbinit
 # check in that version.
 
 EXTRA=\
-        sender.c\
+      	toggle.c\
+	print_count.c\
+	sender.c\
         reciever.c\
 	prog.c\
       	add.c\

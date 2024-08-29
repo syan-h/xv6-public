@@ -27,6 +27,8 @@ int addnums(int a,int b);
 int send_message(int* ,char *msg);
 int recieve_message(char *msg);
 int prog(void);
+int print_count(void);
+int toggle(void);
 
 // ulib.c
 int stat(const char*, struct stat*);
